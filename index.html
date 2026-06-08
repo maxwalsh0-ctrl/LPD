@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<script>
+  // Send narrow / touch devices to the phone-tuned page (one-way; no loop)
+  (function() {
+    try {
+      var path = (location.pathname || '').toLowerCase();
+      if (path.endsWith('mobile.html') || location.search.indexOf('desktop=1') > -1) return;
+      var w = window.innerWidth || document.documentElement.clientWidth;
+      var coarse = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+      if (w < 760 || coarse) {
+        location.replace('mobile.html' + (location.hash || ''));
+      }
+    } catch (e) { /* fail open: stay on desktop */ }
+  })();
+</script>
+<title>LPD Liver Paint &amp; Decorate, Liverpool's painters, tilers &amp; decorators since 1992</title>
+<meta name="description" content="Family-run, Checkatrade-vetted painters, tilers and decorators serving Liverpool and Merseyside since 1992. Interior, exterior, tiling, jet washing, wallpaper, heritage and commercial work. Clean, tidy, on time." />
+<meta name="theme-color" content="#FBF6EC" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="LPD Liver Paint &amp; Decorate" />
+<meta property="og:title" content="LPD Liver Paint &amp; Decorate, Liverpool's painters since 1992" />
+<meta property="og:description" content="Family-run, Checkatrade-vetted. Paint · Tile · Decorate. Liverpool &amp; Merseyside." />
+<meta property="og:image" content="./logo.png" />
+<meta property="og:image:width" content="1024" />
+<meta property="og:image:height" content="1024" />
+<meta property="og:image:alt" content="LPD Liver Paint and Decorate, Liverpool. Since 1992. Mob 07552 293682, Tel 0151 476 9294, Instagram @lpd_liverpaint.and.decorate" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="LPD Liver Paint &amp; Decorate, since 1992" />
+<meta name="twitter:description" content="Family-run, Checkatrade-vetted painters &amp; decorators. Liverpool &amp; Merseyside." />
+<meta name="twitter:image" content="./logo.png" />
+<meta name="twitter:image:alt" content="LPD Liver Paint and Decorate, Liverpool. Since 1992." />
+<link rel="icon" type="image/png" href="./logo.png" />
+<link rel="apple-touch-icon" href="./logo.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   FRESH PALETTE, pulled from the LPD mascot card:
+   warm cream sky · navy overalls · cap red · tan buildings
+   ============================================================ */
+:root {
+  --bg:        #FBF6EC;   /* paint-white, warm */
+  --bg-2:      #F4EBD6;   /* sunlit cream paper */
+  --bg-3:      #FFF;       /* pure white card surface */
+  --ink:       #1A1B1F;    /* near-black like comic outlines */
+  --ink-2:     #44464D;
+  --muted:     #8A8579;
+
+  --red:       #D14635;    /* the cap red */
+  --red-2:     #E76149;    /* lighter cap red */
+  --navy:      #1F3A5F;    /* overalls navy */
+  --navy-2:    #2C548A;    /* highlighted navy */
+
+  --peach:     #FFD9A8;    /* sunset highlight */
+  --peach-2:   #FBE6C7;    /* soft peach */
+  --tan:       #C9B17A;    /* tan buildings */
+
+  --line:      rgba(26, 27, 31, 0.10);
+  --line-2:    rgba(26, 27, 31, 0.05);
+  --comic:     #1A1B1F;    /* comic-book outline */
+
+  --max: 1440px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --serif: 'Instrument Serif', 'Times New Roman', serif;
+  --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:  'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); }
+html, body { overflow-x: hidden; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+::selection { background: var(--red); color: var(--bg); }
+
+/* ============== Type primitives ============== */
+.serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; line-height: 1; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+.eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--red);
+  box-shadow: 0 0 0 4px rgba(209, 70, 53, 0.18);
+}
+
+/* ============== Layout ============== */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); position: relative; z-index: 2; }
+section { position: relative; z-index: 2; }
+
+/* ============== Preloader, warm cream, paint stripe bar ============== */
+.preloader {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg-2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  will-change: transform;
+}
+.pre-logo {
+  width: 120px; height: 120px; border-radius: 28px; overflow: hidden;
+  border: 2px solid var(--comic);
+  box-shadow: 6px 6px 0 0 var(--ink);
+  opacity: 0; transform: translateY(20px) rotate(-3deg);
+  background: var(--peach);
+  margin-bottom: 28px;
+}
+.pre-logo img {
+  width: 100%; height: 100%; object-fit: cover;
+  image-rendering: high-quality;
+  image-rendering: smooth;
+}
+.pre-mark {
+  font-family: var(--serif); font-size: clamp(56px, 11vw, 130px); line-height: 1;
+  color: var(--ink); opacity: 0; transform: translateY(20px);
+  letter-spacing: -0.04em;
+}
+.pre-mark .ital { font-style: italic; color: var(--red); }
+.pre-tag {
+  margin-top: 16px; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-2);
+  opacity: 0;
+}
+.pre-bottom {
+  position: absolute; bottom: 36px; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: end;
+  padding: 0 var(--gutter);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+.pre-counter {
+  font-family: var(--serif); font-size: clamp(40px, 7vw, 76px);
+  color: var(--ink); line-height: 1;
+}
+.pre-counter span:last-child { font-size: 0.5em; color: var(--muted); margin-left: 4px; vertical-align: top; }
+.pre-bar {
+  position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
+  background: var(--red);
+}
+
+/* ============== Top nav ============== */
+nav.top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 16px var(--gutter);
+  display: flex; justify-content: space-between; align-items: center;
+  transition: padding 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+  opacity: 0;
+  border-bottom: 1px solid transparent;
+}
+nav.top.scrolled {
+  padding: 10px var(--gutter);
+  background: rgba(251, 246, 236, 0.86);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  display: flex; align-items: center; gap: 12px;
+}
+.brand-img {
+  width: 48px; height: 48px; border-radius: 12px; object-fit: cover;
+  border: 1.5px solid var(--comic);
+  box-shadow: 3px 3px 0 0 var(--ink);
+  background: var(--peach);
+  image-rendering: high-quality;
+  image-rendering: smooth;
+}
+.brand-text {
+  font-family: var(--serif); font-size: 22px; line-height: 1;
+  letter-spacing: -0.01em;
+}
+.brand-text em { font-style: italic; color: var(--red); }
+.brand-sub {
+  display: block; font-family: var(--mono); font-size: 9.5px;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted);
+  margin-top: 4px;
+}
+
+nav.top ul { list-style: none; display: flex; gap: 4px; align-items: center; }
+nav.top ul a {
+  padding: 8px 14px; font-size: 13.5px; color: var(--ink-2); font-weight: 400;
+  border-radius: 999px; transition: color 0.25s ease, background 0.25s ease;
+}
+nav.top ul a:hover { color: var(--ink); background: rgba(26,27,31,0.05); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 18px; border-radius: 999px;
+  background: var(--red); color: var(--bg);
+  border: 1.5px solid var(--comic);
+  box-shadow: 3px 3px 0 0 var(--ink);
+  font-size: 13px; font-weight: 600;
+  transition: 0.25s cubic-bezier(0.2,0.7,0.2,1);
+}
+.nav-cta:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 0 var(--ink); }
+.nav-cta:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--ink); }
+.nav-cta svg { width: 13px; height: 13px; }
+
+.menu-toggle { display: none; }
+@media (max-width: 880px) {
+  nav.top ul { display: none; }
+  .menu-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    border: 1.5px solid var(--comic); background: var(--bg);
+    box-shadow: 2px 2px 0 0 var(--ink);
+  }
+  .brand-sub { display: none; }
+  .brand-text { font-size: 18px; }
+  .brand-img { width: 40px; height: 40px; }
+}
+
+.menu-panel {
+  position: fixed; top: 76px; right: var(--gutter); z-index: 49;
+  width: calc(100vw - var(--gutter) * 2); max-width: 320px;
+  background: var(--bg);
+  border: 1.5px solid var(--comic);
+  border-radius: 16px; padding: 10px;
+  display: none;
+  box-shadow: 5px 5px 0 0 var(--ink);
+}
+.menu-panel.open { display: block; }
+.menu-panel a {
+  display: block; padding: 14px 16px; font-size: 15px; border-radius: 10px;
+  color: var(--ink-2); transition: background 0.2s, color 0.2s;
+}
+.menu-panel a:hover { background: var(--bg-2); color: var(--ink); }
+
+/* ============== HERO, light, two-column with giant logo ============== */
+.hero {
+  position: relative;
+  min-height: 100vh; min-height: 100dvh;
+  padding: 130px var(--gutter) 80px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--peach) 0%, var(--peach-2) 35%, var(--bg-2) 70%, var(--bg) 100%);
+}
+.hero-skyline {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 26vh; max-height: 280px;
+  opacity: 0.35;
+  pointer-events: none; z-index: 0;
+}
+.hero .wrap {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1.25fr 1fr; gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+.hero-eyebrow-row {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px; opacity: 0; flex-wrap: wrap;
+}
+.hero-vetted {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--ink); color: var(--bg);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.hero-vetted svg { width: 12px; height: 12px; color: #FFD52E; }
+
+.hero-title {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(56px, 10vw, 176px); line-height: 0.9;
+  letter-spacing: -0.035em; color: var(--ink);
+  margin-bottom: 36px; max-width: 16ch;
+}
+.hero-title .line { display: block; overflow: hidden; }
+.hero-title .line-inner { display: block; }
+.hero-title .ital { font-style: italic; color: var(--red); }
+
+.hero-sub {
+  font-size: clamp(16px, 1.4vw, 19px); color: var(--ink-2); max-width: 50ch;
+  font-weight: 300; line-height: 1.6; opacity: 0;
+}
+
+.hero-bottom {
+  margin-top: 56px; display: flex; align-items: end;
+  border-top: 1px solid var(--line); padding-top: 28px;
+  opacity: 0; gap: 24px; flex-wrap: wrap;
+}
+.hero-meta-row { display: flex; gap: clamp(28px, 4vw, 56px); flex-wrap: wrap; }
+.hero-meta-row > div { display: flex; flex-direction: column; gap: 6px; }
+.hero-meta-row .k {
+  font-family: var(--serif); font-size: clamp(22px, 2.4vw, 32px);
+  color: var(--ink); line-height: 1;
+}
+.hero-meta-row .k em { font-style: italic; color: var(--red); }
+.hero-meta-row .v {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* HERO LOGO, giant ============== */
+.hero-logo-card {
+  position: relative;
+  width: 100%; max-width: 460px;
+  aspect-ratio: 1 / 1;
+  justify-self: end;
+  opacity: 0; transform: rotate(-3deg) scale(0.96);
+  transition: transform 0.5s cubic-bezier(0.2,0.7,0.2,1);
+}
+.hero-logo-card:hover { transform: rotate(0deg) scale(1.01); }
+.hero-logo-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  border-radius: clamp(24px, 3vw, 40px);
+  overflow: hidden;
+  border: 2.5px solid var(--comic);
+  box-shadow:
+    14px 14px 0 0 var(--ink),
+    0 30px 60px -10px rgba(26, 27, 31, 0.20);
+  background: var(--peach);
+}
+.hero-logo-inner img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  image-rendering: smooth;
+}
+.hero-logo-pin {
+  position: absolute; top: -14px; left: -14px;
+  width: 76px; height: 76px;
+  background: var(--red); color: var(--bg);
+  border-radius: 50%;
+  border: 2.5px solid var(--comic);
+  box-shadow: 4px 4px 0 0 var(--ink);
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  font-family: var(--serif); font-style: italic;
+  transform: rotate(-12deg);
+  text-align: center; line-height: 1;
+  z-index: 2;
+}
+.hero-logo-pin .pin-num { font-size: 28px; }
+.hero-logo-pin .pin-lbl {
+  font-family: var(--mono); font-style: normal;
+  font-size: 7.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  margin-top: 3px; opacity: 0.95;
+}
+.hero-logo-tag {
+  position: absolute; bottom: -16px; right: 14px;
+  padding: 10px 16px;
+  background: var(--bg); color: var(--ink);
+  border-radius: 999px;
+  border: 2px solid var(--comic);
+  box-shadow: 3px 3px 0 0 var(--ink);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+  z-index: 2;
+}
+.hero-logo-tag svg { width: 12px; height: 12px; color: #FFD52E; }
+
+@media (max-width: 980px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 48px; }
+  .hero-logo-card { justify-self: start; max-width: 360px; }
+}
+@media (max-width: 700px) {
+  .hero { padding: 110px var(--gutter) 56px; }
+  .hero-title { margin-bottom: 28px; }
+  .hero-bottom { margin-top: 44px; flex-direction: column; gap: 22px; align-items: start; }
+  .hero-meta-row { gap: 26px; }
+  .hero-logo-card { max-width: 280px; }
+  .hero-logo-pin { width: 64px; height: 64px; top: -10px; left: -10px; }
+  .hero-logo-pin .pin-num { font-size: 22px; }
+}
+
+/* ============== Trust strip ============== */
+.trust-strip {
+  background: var(--ink); color: var(--bg);
+  padding: 14px var(--gutter);
+  position: relative; z-index: 2;
+}
+.trust-strip-inner {
+  max-width: var(--max); margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.trust-strip-inner span { display: inline-flex; align-items: center; gap: 8px; }
+.trust-strip-inner svg { width: 12px; height: 12px; }
+.trust-strip-inner .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--red-2); }
+
+/* ============== Marquee ============== */
+.marquee {
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.marquee-track {
+  display: flex; gap: 48px; white-space: nowrap;
+  font-family: var(--serif); font-style: italic; font-size: clamp(28px, 4vw, 48px);
+  color: var(--ink-2);
+  animation: marquee 26s linear infinite;
+  will-change: transform;
+}
+.marquee-track span.bullet { color: var(--red); font-style: normal; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============== Section heads ============== */
+.section-head {
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(32px, 6vw, 96px);
+  align-items: end; margin-bottom: clamp(48px, 8vw, 96px);
+}
+.section-head .eyebrow { margin-bottom: 16px; }
+.section-head h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(36px, 5.5vw, 88px); line-height: 0.98;
+  letter-spacing: -0.025em; color: var(--ink);
+}
+.section-head h2 em { font-style: italic; color: var(--red); }
+.section-head .sub {
+  color: var(--ink-2); max-width: 52ch; font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 300; line-height: 1.65; padding-bottom: 12px;
+}
+@media (max-width: 760px) {
+  .section-head { grid-template-columns: 1fr; gap: 22px; align-items: start; }
+  .section-head .sub { padding-bottom: 0; }
+}
+
+/* ============== Services, comic-style cards ============== */
+.services { padding: clamp(80px, 12vw, 160px) 0; background: var(--bg); }
+.svc-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2vw, 28px);
+}
+.svc {
+  position: relative;
+  background: var(--bg-3); border-radius: 22px;
+  padding: 32px 28px;
+  border: 2px solid var(--comic);
+  box-shadow: 6px 6px 0 0 var(--ink);
+  display: flex; flex-direction: column; gap: 16px;
+  transition: transform 0.3s cubic-bezier(0.2,0.7,0.2,1), box-shadow 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.svc:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 0 var(--ink); }
+.svc-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.svc-num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; color: var(--muted);
+}
+.svc-tag {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--peach); color: var(--ink);
+  border: 1.5px solid var(--comic);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 500;
+}
+.svc-tag.red { background: var(--red); color: var(--bg); border-color: var(--comic); }
+.svc-tag.navy { background: var(--navy); color: var(--bg); border-color: var(--comic); }
+.svc-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: var(--peach);
+  border: 2px solid var(--comic);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 0 var(--ink);
+}
+.svc.red    .svc-icon { background: var(--red); color: var(--bg); }
+.svc.navy   .svc-icon { background: var(--navy); color: var(--bg); }
+.svc.peach  .svc-icon { background: var(--peach-2); color: var(--ink); }
+.svc.tan    .svc-icon { background: var(--tan); color: var(--ink); }
+.svc-icon svg { width: 26px; height: 26px; stroke-width: 2.2; }
+.svc h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(28px, 2.8vw, 36px); line-height: 1.02;
+  letter-spacing: -0.02em; color: var(--ink);
+}
+.svc h3 em { font-style: italic; color: var(--red); }
+.svc p {
+  font-size: 14.5px; color: var(--ink-2); line-height: 1.55; font-weight: 300;
+}
+.svc .meta-tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  color: var(--muted); text-transform: uppercase; margin-top: auto; padding-top: 10px;
+}
+@media (max-width: 980px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .svc-grid { grid-template-columns: 1fr; } }
+
+/* ============== Why us / Trust grid ============== */
+.why { padding: clamp(80px, 12vw, 160px) 0; border-top: 1px solid var(--line); background: var(--bg-2); position: relative; }
+.why-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2vw, 22px);
+}
+.why-cell {
+  background: var(--bg-3); padding: 36px 28px;
+  border: 2px solid var(--comic); border-radius: 20px;
+  box-shadow: 5px 5px 0 0 var(--ink);
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: 18px; min-height: 280px;
+  transition: transform 0.3s cubic-bezier(0.2,0.7,0.2,1), box-shadow 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.why-cell:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 0 var(--ink); }
+.why-cell-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: var(--bg);
+  border: 2px solid var(--comic);
+  box-shadow: 3px 3px 0 0 var(--ink);
+}
+.why-cell-icon svg { width: 22px; height: 22px; stroke-width: 2.2; }
+.why-cell.red   .why-cell-icon { background: var(--red); }
+.why-cell.navy  .why-cell-icon { background: var(--navy); }
+.why-cell.peach .why-cell-icon { background: var(--peach); color: var(--ink); }
+.why-cell h3 {
+  font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 2.8vw, 36px);
+  letter-spacing: -0.02em; line-height: 1.04; color: var(--ink);
+  margin-top: 6px;
+}
+.why-cell p { color: var(--ink-2); font-size: 14.5px; line-height: 1.6; font-weight: 300; }
+.why-cell .num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; color: var(--muted);
+}
+@media (max-width: 980px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .why-grid { grid-template-columns: 1fr; } .why-cell { min-height: 0; padding: 28px 24px; } }
+
+/* ============== Reviews ============== */
+.reviews { padding: clamp(80px, 12vw, 160px) 0; border-top: 1px solid var(--line); background: var(--bg); }
+.review-summary {
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  justify-self: end; justify-content: flex-end;
+  padding-bottom: 12px;
+}
+.review-score {
+  font-family: var(--serif); font-size: clamp(56px, 7vw, 88px); line-height: 1;
+  color: var(--ink); letter-spacing: -0.03em;
+}
+.review-score em { font-style: italic; color: var(--red); }
+.review-stars { display: flex; gap: 4px; }
+.review-stars svg { width: 22px; height: 22px; color: #E0A82E; fill: currentColor; }
+.review-source {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+  margin-top: 8px;
+}
+.review-source a { color: var(--navy-2); border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+.review-source a:hover { color: var(--red); }
+@media (max-width: 760px) {
+  .review-summary { justify-self: start; justify-content: flex-start; padding-bottom: 0; }
+}
+
+.reviews .section-head { margin-bottom: clamp(20px, 3vw, 32px); }
+.reviews-blurb {
+  margin: 0 0 clamp(36px, 5vw, 56px);
+  max-width: 70ch;
+  font-size: clamp(15px, 1.2vw, 18px);
+  color: var(--ink-2);
+  font-weight: 300; line-height: 1.6;
+}
+
+/* Reviews: flip-card grid. Three cards visible, each turns over left in sequence */
+.reviews-flip-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2vw, 28px);
+  perspective: 1400px;
+  align-items: stretch;
+  padding: 10px 6px;
+}
+.reviews-flip-slot { position: relative; }
+.reviews-flipper {
+  display: grid;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.5, 0, 0.2, 1);
+  will-change: transform;
+}
+.reviews-flipper.is-flipped { transform: rotateY(-180deg); }
+.reviews-face {
+  grid-area: 1 / 1;
+  margin: 0;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+.reviews-face-back { transform: rotateY(180deg); }
+/* Stagger card backgrounds so flips visually punctuate */
+.reviews-flip-slot:nth-child(1) .reviews-face-front { background: var(--bg-2); }
+.reviews-flip-slot:nth-child(1) .reviews-face-back  { background: var(--bg-3); }
+.reviews-flip-slot:nth-child(2) .reviews-face-front { background: var(--peach-2); }
+.reviews-flip-slot:nth-child(2) .reviews-face-back  { background: var(--bg-2); }
+.reviews-flip-slot:nth-child(3) .reviews-face-front { background: var(--bg-3); }
+.reviews-flip-slot:nth-child(3) .reviews-face-back  { background: var(--peach-2); }
+@media (max-width: 980px) {
+  .reviews-flip-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reviews-flipper { transition: none; }
+}
+.review-card {
+  background: var(--bg-2); padding: 28px 26px;
+  border: 2px solid var(--comic); border-radius: 18px;
+  box-shadow: 5px 5px 0 0 var(--ink);
+  display: flex; flex-direction: column; gap: 16px;
+  transition: transform 0.3s cubic-bezier(0.2,0.7,0.2,1), box-shadow 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.review-card:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 0 var(--ink); }
+.review-card .stars { display: flex; gap: 3px; }
+.review-card .stars svg { width: 16px; height: 16px; color: #E0A82E; fill: currentColor; }
+.review-card .quote {
+  font-family: var(--serif); font-size: clamp(20px, 1.7vw, 24px); line-height: 1.32;
+  color: var(--ink); letter-spacing: -0.005em;
+}
+.review-card .quote::before { content: "\201C"; color: var(--red); margin-right: 2px; }
+.review-card .quote::after  { content: "\201D"; color: var(--red); margin-left: 2px; }
+.review-card .meta {
+  display: flex; flex-direction: column; gap: 4px; margin-top: auto;
+  padding-top: 18px; border-top: 1px solid var(--line);
+}
+.review-card .meta .name { font-size: 14px; font-weight: 500; color: var(--ink); }
+.review-card .meta .work {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+.review-cta {
+  margin-top: 40px;
+  display: flex; justify-content: center; align-items: center;
+  gap: 14px; flex-wrap: wrap;
+}
+.btn-ghost,
+.btn-ghost-red {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 22px; border-radius: 999px;
+  border: 2px solid var(--comic); box-shadow: 4px 4px 0 0 var(--ink);
+  font-size: 13.5px; font-weight: 600;
+  transition: 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.btn-ghost     { background: var(--bg-3); color: var(--ink); }
+.btn-ghost-red { background: var(--red);  color: var(--bg);  }
+.btn-ghost:hover, .btn-ghost-red:hover     { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--ink); }
+.btn-ghost:active, .btn-ghost-red:active   { transform: translate(2px, 2px);   box-shadow: 2px 2px 0 0 var(--ink); }
+.btn-ghost svg, .btn-ghost-red svg         { width: 14px; height: 14px; }
+
+/* ============== About, with framed logo treatment ============== */
+.about { padding: clamp(72px, 10vw, 140px) 0 clamp(56px, 7vw, 88px); border-top: 1px solid var(--line); background: var(--bg-2); }
+.about-grid {
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+.about-text .eyebrow { margin-bottom: 22px; }
+.about-text h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(36px, 5vw, 80px); line-height: 0.98;
+  letter-spacing: -0.025em; margin-bottom: 32px;
+}
+.about-text h2 em { font-style: italic; color: var(--red); }
+.about-text p {
+  font-size: clamp(16px, 1.3vw, 19px); color: var(--ink-2); line-height: 1.65;
+  font-weight: 300; max-width: 58ch; margin-bottom: 18px;
+}
+
+.about-aside {
+  display: flex; flex-direction: column; gap: 22px;
+  position: sticky; top: 100px;
+}
+.about-logo-card {
+  position: relative;
+  border: 2.5px solid var(--comic);
+  border-radius: 24px; overflow: hidden;
+  background: var(--peach);
+  box-shadow: 10px 10px 0 0 var(--ink);
+  transform: rotate(2deg);
+  transition: transform 0.4s cubic-bezier(0.2,0.7,0.2,1);
+}
+.about-logo-card:hover { transform: rotate(0deg); }
+.about-logo-card img {
+  width: 100%; aspect-ratio: 1/1; object-fit: cover;
+  display: block;
+  image-rendering: high-quality;
+  image-rendering: smooth;
+}
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.about-stats > div {
+  background: var(--bg-3); padding: 20px;
+  border: 2px solid var(--comic); border-radius: 14px;
+  box-shadow: 3px 3px 0 0 var(--ink);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.about-stats strong {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(32px, 3.4vw, 44px); line-height: 1; color: var(--ink);
+}
+.about-stats strong em { font-style: italic; color: var(--red); }
+.about-stats span {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  color: var(--muted); text-transform: uppercase;
+}
+@media (max-width: 880px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-aside { position: static; }
+  .about-logo-card { max-width: 380px; transform: rotate(-2deg); }
+}
+
+/* ============== Contact, light + warm gradient ============== */
+.contact {
+  padding: clamp(64px, 9vw, 110px) 0 clamp(72px, 10vw, 120px);
+  text-align: center;
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--peach) 0%, var(--peach-2) 30%, var(--bg-2) 70%, var(--bg) 100%);
+}
+.contact-inner { position: relative; z-index: 1; }
+.contact .eyebrow { justify-content: center; margin-bottom: 22px; }
+.contact h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(48px, 8.5vw, 132px); line-height: 0.95;
+  letter-spacing: -0.03em; color: var(--ink); margin-bottom: 44px;
+}
+.contact h2 em { font-style: italic; color: var(--red); }
+.contact-actions {
+  display: flex; gap: 14px; justify-content: center; align-items: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 26px; border-radius: 999px;
+  background: var(--red); color: var(--bg);
+  border: 2px solid var(--comic);
+  box-shadow: 5px 5px 0 0 var(--ink);
+  font-size: 14.5px; font-weight: 600;
+  transition: 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 0 var(--ink); }
+.btn-primary:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.btn-primary svg { width: 14px; height: 14px; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 26px; border-radius: 999px;
+  background: var(--bg-3); color: var(--ink);
+  border: 2px solid var(--comic); box-shadow: 5px 5px 0 0 var(--ink);
+  font-size: 14.5px; font-weight: 600;
+  transition: 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.btn-secondary:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 0 var(--ink); }
+.btn-secondary:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.btn-secondary svg { width: 14px; height: 14px; }
+
+.contact-channels {
+  margin-top: 56px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 1.5vw, 18px);
+}
+@media (max-width: 1024px) { .contact-channels { grid-template-columns: repeat(2, 1fr); } }
+.contact-channels a {
+  background: var(--bg-3); padding: 24px 22px;
+  border: 2px solid var(--comic); border-radius: 18px;
+  box-shadow: 4px 4px 0 0 var(--ink);
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+  text-align: left;
+  transition: transform 0.3s cubic-bezier(0.2,0.7,0.2,1), box-shadow 0.3s cubic-bezier(0.2,0.7,0.2,1);
+}
+.contact-channels a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--ink); }
+.contact-channels .lbl {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--muted);
+}
+.contact-channels .val {
+  font-family: var(--serif); font-size: clamp(20px, 2vw, 26px); color: var(--ink);
+  letter-spacing: -0.01em;
+}
+@media (max-width: 760px) { .contact-channels { grid-template-columns: 1fr; } }
+
+/* ============== Footer ============== */
+footer {
+  padding: 36px var(--gutter);
+  border-top: 1px solid var(--line);
+  background: var(--ink); color: var(--bg);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+footer .foot-brand { display: flex; align-items: center; gap: 10px; }
+footer .foot-brand img {
+  width: 32px; height: 32px; border-radius: 8px; object-fit: cover;
+  border: 1.5px solid var(--bg);
+  image-rendering: high-quality;
+  image-rendering: smooth;
+}
+footer .foot-end { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+footer a { color: var(--bg); transition: color 0.25s; }
+footer a:hover { color: var(--red-2); }
+@media (max-width: 600px) { footer { flex-direction: column; text-align: center; } }
+
+/* ============== Generic reveal ============== */
+.reveal { opacity: 0; transform: translateY(40px); }
+
+/* ============== Reduced motion ============== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .preloader { display: none !important; }
+  .reveal,
+  .hero-eyebrow-row, .hero .line-inner, .hero .hero-sub, .hero-bottom, .hero-logo-card {
+    opacity: 1 !important; transform: none !important;
+  }
+  nav.top { opacity: 1 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== PRELOADER ============================== -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pre-logo" id="preLogo"><img src="./logo.png" alt="LPD logo" decoding="async" /></div>
+  <div class="pre-mark" id="preMark">L<span class="ital">P</span>D</div>
+  <div class="pre-tag" id="preTag">Liverpool · Painters &amp; Decorators · Est. 1992</div>
+  <div class="pre-bottom">
+    <div class="pre-counter"><span id="counter">0</span><span>%</span></div>
+    <div>Mossley Hill · Liverpool</div>
+  </div>
+  <div class="pre-bar" id="preBar"></div>
+</div>
+
+<!-- ============================== NAV ============================== -->
+<nav class="top" id="nav">
+  <a href="#top" class="brand" aria-label="LPD home">
+    <img src="./logo.png" alt="LPD Liver Paint &amp; Decorate logo" class="brand-img" decoding="async" />
+    <div>
+      <div class="brand-text">L<em>P</em>D</div>
+      <span class="brand-sub">Liver Paint &amp; Decorate</span>
+    </div>
+  </a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">
+    Get a quote
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>
+  </button>
+</nav>
+<div class="menu-panel" id="menuPanel">
+  <a href="#services">Services</a>
+  <a href="#why">Why us</a>
+  <a href="#reviews">Reviews</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+  <a href="https://www.instagram.com/lpd_liverpaint.and.decorate/" target="_blank" rel="noopener">Instagram</a>
+  <a href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">Checkatrade profile</a>
+</div>
+
+<!-- ============================== HERO ============================== -->
+<section class="hero" id="top">
+  <!-- Liverpool waterfront silhouette: Three Graces, Liver Birds, both cathedrals -->
+  <svg class="hero-skyline" viewBox="0 0 1440 280" preserveAspectRatio="xMidYEnd slice" aria-hidden="true">
+    <g fill="currentColor" style="color: var(--tan);">
+      <!-- Far-left dock warehouses + crane jib -->
+      <path d="M0 280 L0 240 L40 240 L40 232 L80 232 L80 240 L120 240 L120 226 L160 226 L160 240 L200 240 L200 280 Z"/>
+      <path d="M30 232 L30 196 L34 196 L34 232 Z"/>
+      <path d="M34 196 L120 192 L120 198 L34 202 Z"/>
+
+      <!-- Princes Dock modern slabs -->
+      <path d="M218 280 L218 198 L248 198 L248 280 Z"/>
+      <path d="M252 280 L252 186 L282 186 L282 280 Z"/>
+      <path d="M286 280 L286 192 L316 192 L316 280 Z"/>
+
+      <!-- Mann Island angular blacks -->
+      <path d="M332 280 L332 216 L398 216 L398 202 L420 216 L420 280 Z"/>
+
+      <!-- Port of Liverpool Building (Three Graces #1, domed) -->
+      <path d="M438 280 L438 198 L545 198 L545 280 Z"/>
+      <path d="M438 198 L438 180 L463 180 L463 198 Z"/>
+      <path d="M520 198 L520 180 L545 180 L545 198 Z"/>
+      <path d="M477 198 L477 170 L506 170 L506 198 Z"/>
+      <ellipse cx="491.5" cy="162" rx="20" ry="14"/>
+      <path d="M487 150 L487 140 L496 140 L496 150 Z"/>
+      <path d="M489 140 L491.5 128 L494 140 Z"/>
+
+      <!-- Cunard Building (Three Graces #2, classical flat top) -->
+      <path d="M563 280 L563 194 L685 194 L685 280 Z"/>
+      <path d="M563 194 L563 184 L685 184 L685 194 Z"/>
+      <path d="M578 184 L578 174 L586 174 L586 184 Z"/>
+      <path d="M620 184 L620 168 L628 168 L628 184 Z"/>
+      <path d="M662 184 L662 174 L670 174 L670 184 Z"/>
+
+      <!-- Royal Liver Building (Three Graces #3 — twin clock towers + Liver Birds) -->
+      <path d="M703 280 L703 178 L860 178 L860 280 Z"/>
+      <path d="M718 178 L718 154 L845 154 L845 178 Z"/>
+      <!-- twin clock-tower bases -->
+      <path d="M733 154 L733 128 L778 128 L778 154 Z"/>
+      <path d="M785 154 L785 128 L830 128 L830 154 Z"/>
+      <!-- clock faces -->
+      <path d="M738 128 L738 98 L773 98 L773 128 Z"/>
+      <path d="M790 128 L790 98 L825 98 L825 128 Z"/>
+      <!-- cupola drums -->
+      <path d="M743 98 L743 84 L768 84 L768 98 Z"/>
+      <path d="M795 98 L795 84 L820 84 L820 98 Z"/>
+      <!-- cupola domes -->
+      <ellipse cx="755.5" cy="80" rx="14" ry="6"/>
+      <ellipse cx="807.5" cy="80" rx="14" ry="6"/>
+      <!-- lantern spires -->
+      <path d="M752 74 L752 62 L759 62 L759 74 Z"/>
+      <path d="M804 74 L804 62 L811 62 L811 74 Z"/>
+      <!-- Liver Birds (perched silhouettes) -->
+      <path d="M748 62 L754 54 L758 58 L766 50 L764 58 L758 62 L754 62 Z"/>
+      <path d="M800 62 L806 54 L810 58 L818 50 L816 58 L810 62 L806 62 Z"/>
+
+      <!-- Behind: city street offices -->
+      <path d="M880 280 L880 212 L915 212 L915 280 Z"/>
+      <path d="M920 280 L920 190 L955 190 L955 280 Z"/>
+      <path d="M960 280 L960 222 L990 222 L990 280 Z"/>
+
+      <!-- Liverpool Cathedral (Anglican) — massive Gothic central tower -->
+      <path d="M1008 280 L1008 215 L1090 215 L1090 280 Z"/>
+      <path d="M1023 215 L1023 148 L1075 148 L1075 215 Z"/>
+      <path d="M1028 148 L1028 116 L1070 116 L1070 148 Z"/>
+      <path d="M1033 116 L1033 92 L1065 92 L1065 116 Z"/>
+      <!-- corner pinnacles -->
+      <path d="M1028 116 L1031 99 L1034 116 Z"/>
+      <path d="M1064 116 L1067 99 L1070 116 Z"/>
+      <!-- top crown of four pinnacles -->
+      <path d="M1033 92 L1036 78 L1039 92 Z"/>
+      <path d="M1040 92 L1043 70 L1046 92 Z"/>
+      <path d="M1052 92 L1055 70 L1058 92 Z"/>
+      <path d="M1059 92 L1062 78 L1065 92 Z"/>
+
+      <!-- Terraced housing gap -->
+      <path d="M1108 280 L1108 226 L1148 226 L1148 216 L1190 216 L1190 230 L1228 230 L1228 280 Z"/>
+
+      <!-- Metropolitan Cathedral (the crown spire) -->
+      <path d="M1248 280 L1248 216 L1310 216 L1310 280 Z"/>
+      <path d="M1253 216 L1265 178 L1293 178 L1305 216 Z"/>
+      <!-- crown of pinnacles around the cone -->
+      <path d="M1265 178 L1267 160 L1269 178 Z"/>
+      <path d="M1272 178 L1275 150 L1278 178 Z"/>
+      <path d="M1281 178 L1283 160 L1285 178 Z"/>
+      <path d="M1288 178 L1291 150 L1294 178 Z"/>
+      <!-- central spire -->
+      <path d="M1277 150 L1279 130 L1281 150 Z"/>
+
+      <!-- Modern Mersey towers (right) -->
+      <path d="M1330 280 L1330 196 L1360 196 L1360 280 Z"/>
+      <path d="M1365 280 L1365 174 L1395 174 L1395 280 Z"/>
+
+      <!-- Far right: terraces -->
+      <path d="M1405 280 L1405 216 L1420 216 L1420 206 L1440 206 L1440 280 Z"/>
+    </g>
+  </svg>
+
+  <div class="wrap">
+    <div class="hero-left">
+      <div class="hero-eyebrow-row">
+        <div class="eyebrow"><span class="dot"></span> Liverpool · Est. 1992</div>
+        <div class="hero-vetted">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 6v6c0 5 3.8 9.5 9 10 5.2-.5 9-5 9-10V6l-9-4zm-1.2 14.2L7 12.4l1.4-1.4 2.4 2.4L15.6 9l1.4 1.4-6.2 5.8z"/></svg>
+          Checkatrade Vetted
+        </div>
+      </div>
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">Liverpool's</span></span>
+        <span class="line"><span class="line-inner"><span class="ital">painters &amp;</span></span></span>
+        <span class="line"><span class="line-inner"><span class="ital">decorators.</span></span></span>
+      </h1>
+      <p class="hero-sub">Paint, tile and decorate, family-run since 1992. Interior, exterior, tiling, jet washing, wallpaper, heritage and commercial work across Liverpool &amp; Merseyside, finished on time, kept clean and tidy, done to the last detail.</p>
+
+      <div class="hero-bottom">
+        <div class="hero-meta-row">
+          <div>
+            <span class="k"><em>30+</em></span>
+            <span class="v">Years in the trade</span>
+          </div>
+          <div>
+            <span class="k">10/10</span>
+            <span class="v">Checkatrade reviews</span>
+          </div>
+          <div>
+            <span class="k">Vetted</span>
+            <span class="v">ID · Insurance · Refs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Giant hero logo card -->
+    <div class="hero-logo-card" id="heroLogo">
+      <div class="hero-logo-inner">
+        <img src="./logo.png" alt="LPD Liver Paint &amp; Decorate, Liverpool mascot" decoding="async" />
+      </div>
+      <div class="hero-logo-pin">
+        <div class="pin-num">'92</div>
+        <div class="pin-lbl">Est.</div>
+      </div>
+      <div class="hero-logo-tag">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 6v6c0 5 3.8 9.5 9 10 5.2-.5 9-5 9-10V6l-9-4zm-1.2 14.2L7 12.4l1.4-1.4 2.4 2.4L15.6 9l1.4 1.4-6.2 5.8z"/></svg>
+        10/10 on Checkatrade
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== TRUST STRIP ============================== -->
+<div class="trust-strip">
+  <div class="trust-strip-inner">
+    <span><svg viewBox="0 0 24 24" fill="#FFD52E"><path d="M12 2L3 6v6c0 5 3.8 9.5 9 10 5.2-.5 9-5 9-10V6l-9-4zm-1.2 14.2L7 12.4l1.4-1.4 2.4 2.4L15.6 9l1.4 1.4-6.2 5.8z"/></svg> Checkatrade Vetted</span>
+    <span class="dot"></span>
+    <span>Since 1992</span>
+    <span class="dot"></span>
+    <span>Family-run</span>
+    <span class="dot"></span>
+    <span>Fully Insured</span>
+    <span class="dot"></span>
+    <span>Free Quotes</span>
+  </div>
+</div>
+
+<!-- ============================== MARQUEE ============================== -->
+<section class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Interior</span><span class="bullet">◆</span>
+    <span>Exterior</span><span class="bullet">◆</span>
+    <span>Tiling</span><span class="bullet">◆</span>
+    <span>Jet Washing</span><span class="bullet">◆</span>
+    <span>Wallpaper</span><span class="bullet">◆</span>
+    <span>Spraying</span><span class="bullet">◆</span>
+    <span>Heritage</span><span class="bullet">◆</span>
+    <span>Commercial</span><span class="bullet">◆</span>
+    <span>Coving</span><span class="bullet">◆</span>
+    <span>Interior</span><span class="bullet">◆</span>
+    <span>Exterior</span><span class="bullet">◆</span>
+    <span>Tiling</span><span class="bullet">◆</span>
+    <span>Jet Washing</span><span class="bullet">◆</span>
+    <span>Wallpaper</span><span class="bullet">◆</span>
+    <span>Spraying</span><span class="bullet">◆</span>
+    <span>Heritage</span><span class="bullet">◆</span>
+    <span>Commercial</span><span class="bullet">◆</span>
+    <span>Coving</span><span class="bullet">◆</span>
+  </div>
+</section>
+
+<!-- ============================== SERVICES ============================== -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> What we do</div>
+        <h2>The full <em>brush &amp; roller.</em></h2>
+      </div>
+      <p class="sub">Two coats minimum. Dust sheets down before I open a tin. Surfaces filled, sanded and primed properly, every time. The prep is the job, whether it's a hallway, a whole house or a driveway that needs blasting back to life.</p>
+    </div>
+
+    <div class="svc-grid">
+      <article class="svc red reveal">
+        <div class="svc-top">
+          <span class="svc-num">01</span>
+          <span class="svc-tag red">Most booked</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M21 6H3v6h18V6z"/><path d="M9 12v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-6"/><path d="M12 20v2"/></svg>
+        </div>
+        <h3>Interior <em>painting</em></h3>
+        <p>Walls, ceilings, woodwork, doors and skirting. Trade-grade Dulux and Crown finishes, brush and roller cut-in.</p>
+        <span class="meta-tag">Rooms · Hallways · Whole homes</span>
+      </article>
+
+      <article class="svc navy reveal">
+        <div class="svc-top">
+          <span class="svc-num">02</span>
+          <span class="svc-tag navy">Insured to height</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
+        </div>
+        <h3>Exterior <em>&amp; rendering</em></h3>
+        <p>Masonry repainting, render restoration, weather-grade Sandtex and Weathershield built for the Mersey weather.</p>
+        <span class="meta-tag">Brick · Render · UPVC · Soffits</span>
+      </article>
+
+      <article class="svc peach reveal">
+        <div class="svc-top">
+          <span class="svc-num">03</span>
+          <span class="svc-tag">New</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l-3 4-2-2-3 4 6 4 5-7-3-3z"/><path d="M3 21l4-6"/><path d="M7 21l3-4"/><path d="M11 21l2-3"/><path d="M15 21l1-2"/></svg>
+        </div>
+        <h3>Jet <em>washing</em></h3>
+        <p>Driveways, patios, render and decking blasted clean. Algae, moss and weather stains lifted before a single tin gets opened.</p>
+        <span class="meta-tag">Driveways · Patios · Fences · Decking</span>
+      </article>
+
+      <article class="svc tan reveal">
+        <div class="svc-top">
+          <span class="svc-num">04</span>
+          <span class="svc-tag navy">Tiler too</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+        </div>
+        <h3>Tiling <em>&amp; bathrooms</em></h3>
+        <p>Wall and floor tiling, kitchens, bathrooms, splashbacks and wet rooms. Cuts kept tight, grout lines kept dead straight.</p>
+        <span class="meta-tag">Bathrooms · Kitchens · Splashbacks</span>
+      </article>
+
+      <article class="svc reveal">
+        <div class="svc-top">
+          <span class="svc-num">05</span>
+          <span class="svc-tag">Spec finish</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 3v18"/><path d="M16 3v18"/><path d="M3 8h5"/><path d="M16 8h5"/><path d="M3 16h5"/><path d="M16 16h5"/></svg>
+        </div>
+        <h3>Wallpaper <em>&amp; lining</em></h3>
+        <p>Pattern-match seams, paste-the-wall and traditional. From a single feature wall to a full Farrow &amp; Ball job.</p>
+        <span class="meta-tag">Feature walls · Hangings · Murals</span>
+      </article>
+
+      <article class="svc reveal">
+        <div class="svc-top">
+          <span class="svc-num">06</span>
+          <span class="svc-tag">Premium</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <h3>Spraying <em>&amp; finishing</em></h3>
+        <p>Airless spray for ultra-smooth lacquer and eggshell finishes on kitchens, fitted furniture and staircases.</p>
+        <span class="meta-tag">Kitchens · Doors · Staircases</span>
+      </article>
+
+      <article class="svc reveal">
+        <div class="svc-top">
+          <span class="svc-num">07</span>
+          <span class="svc-tag">Specialist</span>
+        </div>
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22v-7h6v7"/><path d="M3 12h18"/></svg>
+        </div>
+        <h3>Heritage <em>&amp; period</em></h3>
+        <p>Sympathetic restoration of Victorian and Edwardian Liverpool. Burn-off, fill, prime, paint, done the proper way.</p>
+        <span class="meta-tag">Sash windows · Coving · Plaster</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== WHY US ============================== -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Why LPD</div>
+        <h2>Vetted. Trusted. <em>Since 1992.</em></h2>
+      </div>
+      <p class="sub">Three decades in the same trade, the same city. Most of my work comes from people who used me first, then their neighbour, then their sister. Independently checked by Checkatrade so you don't have to take my word for it.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-cell red reveal">
+        <div>
+          <div class="why-cell-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 6v6c0 5 3.8 9.5 9 10 5.2-.5 9-5 9-10V6l-9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>Checkatrade vetted &amp; passed</h3>
+          <p>ID checked. Public liability insurance verified. References taken up. Independently reviewed by every customer.</p>
+        </div>
+        <div class="num">01 · Trust</div>
+      </div>
+
+      <div class="why-cell navy reveal">
+        <div>
+          <div class="why-cell-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>30+ years in the trade</h3>
+          <p>Established 1992. Three decades of doors, ceilings, sash windows and rendered terraces from Aigburth to Anfield.</p>
+        </div>
+        <div class="num">02 · Experience</div>
+      </div>
+
+      <div class="why-cell peach reveal">
+        <div>
+          <div class="why-cell-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Just me, no subbies</h3>
+          <p>I quote every job and I'm the one painting it. No subcontractors, no surprises, no rotating crew through your home.</p>
+        </div>
+        <div class="num">03 · People</div>
+      </div>
+
+      <div class="why-cell reveal">
+        <div>
+          <div class="why-cell-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3>Clean, tidy, on time</h3>
+          <p>Dust sheets down. Furniture covered. Floors hoovered each evening. The biggest thing my customers mention.</p>
+        </div>
+        <div class="num">04 · Standards</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== REVIEWS ============================== -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> What customers say</div>
+        <h2>Independently <em>reviewed.</em></h2>
+      </div>
+      <div class="review-summary">
+        <div class="review-score"><em>10</em>/10</div>
+        <div>
+          <div class="review-stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="review-source">Verified · <a href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">Checkatrade.com</a></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="reviews-blurb reveal">Every Checkatrade review is verified, the customer is contacted directly after the job, so what you read is what they really thought.</p>
+
+    <div class="reviews-flip-grid reveal" aria-label="Customer reviews from Checkatrade">
+      <div class="reviews-flip-slot">
+        <div class="reviews-flipper">
+          <article class="review-card reviews-face reviews-face-front">
+            <div class="stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote">10/10. Top quality and professional service. Turned up early, worked late to finish on time, kept the whole job clean and tidy and understood every requirement to the last detail.</p>
+            <div class="meta">
+              <span class="name">Verified Checkatrade customer</span>
+              <span class="work">Full house repaint · Liverpool</span>
+            </div>
+          </article>
+          <article class="review-card reviews-face reviews-face-back">
+            <div class="stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote">Carl rendered and painted the front of our terrace last summer. Still spotless a year on, even through a Liverpool winter. Tidy, polite and on time.</p>
+            <div class="meta">
+              <span class="name">Verified Checkatrade customer</span>
+              <span class="work">Exterior render &amp; masonry</span>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="reviews-flip-slot">
+        <div class="reviews-flipper">
+          <article class="review-card reviews-face reviews-face-front">
+            <div class="stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote">Very pleased with the work Carl carried out. Really professional, worked long hours to finish on time, and the standard was excellent throughout.</p>
+            <div class="meta">
+              <span class="name">Verified Checkatrade customer</span>
+              <span class="work">Interior, hallway, stairs &amp; landing</span>
+            </div>
+          </article>
+          <article class="review-card reviews-face reviews-face-back">
+            <div class="stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote">Hung wallpaper in our lounge and the pattern matched perfectly across every join. Quick, neat, no mess, and a lovely man to have in the house.</p>
+            <div class="meta">
+              <span class="name">Verified Checkatrade customer</span>
+              <span class="work">Wallpaper · Feature wall</span>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="reviews-flip-slot">
+        <div class="reviews-flipper">
+          <article class="review-card reviews-face reviews-face-front">
+            <div class="stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote">Great communication from start to finish. Walked the job with us so we knew exactly what to expect. Personable, friendly, polite and a hard worker, couldn't ask for more.</p>
+            <div class="meta">
+              <span class="name">Verified Checkatrade customer</span>
+              <span class="work">Lounge &amp; dining room</span>
+            </div>
+          </article>
+          <article class="review-card reviews-face reviews-face-back">
+            <div class="stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote">Used LPD between tenants on two of our flats. Fast turnaround, same standard both times. Will be the only person I call from now on.</p>
+            <div class="meta">
+              <span class="name">Verified Checkatrade customer</span>
+              <span class="work">Landlord turnaround · L1</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-cta reveal">
+      <a class="btn-ghost-red" href="https://www.checkatrade.com/give-feedback/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Leave a review
+      </a>
+      <a class="btn-ghost" href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">
+        Read every review
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== ABOUT ============================== -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="eyebrow"><span class="dot"></span> About</div>
+        <h2>Born here. <em>Still here.</em></h2>
+        <p>I'm Carl, and I've been painting and decorating Liverpool homes since 1992. It's just me on the job, I quote every piece of work in person and I'm on every site myself, so there's no call centre and no rotating subcontracted crew turning up at your front door.</p>
+        <p>I've worked all over the city: Victorian terraces in Aigburth, sash-window restorations in Mossley Hill, full house refreshes in Crosby and Formby, landlord turnarounds in the city centre. The common thread is always the prep, taping, filling, sanding and priming before I open a single tin. That's the bit that decides whether a finish lasts a year or ten.</p>
+        <p>I'm independently vetted by Checkatrade and fully insured. Quotes are free and no-pressure, anywhere in Liverpool and Merseyside.</p>
+      </div>
+
+      <div class="about-aside reveal">
+        <div class="about-logo-card">
+          <img src="./logo.png" alt="LPD Liver Paint &amp; Decorate mascot" decoding="async" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CONTACT ============================== -->
+<section class="contact" id="contact">
+  <div class="contact-inner wrap">
+    <div class="eyebrow"><span class="dot"></span> Get in touch</div>
+    <h2>Get a <em>free quote.</em></h2>
+
+    <div class="contact-actions">
+      <a class="btn-primary" href="tel:+447552293682">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+        Call Carl
+      </a>
+      <a class="btn-secondary" href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">
+        Request a quote on Checkatrade
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+      </a>
+    </div>
+
+    <div class="contact-channels">
+      <a href="tel:+447552293682">
+        <span class="lbl">Mobile</span>
+        <span class="val">07552 293682</span>
+      </a>
+      <a href="tel:+441514769294">
+        <span class="lbl">Landline</span>
+        <span class="val">0151 476 9294</span>
+      </a>
+      <a href="https://www.instagram.com/lpd_liverpaint.and.decorate/" target="_blank" rel="noopener">
+        <span class="lbl">Instagram</span>
+        <span class="val">@lpd_liverpaint.<wbr/>and.decorate</span>
+      </a>
+      <a href="https://www.google.com/maps/search/?api=1&query=53+Braidwood+Road+Liverpool" target="_blank" rel="noopener">
+        <span class="lbl">Based at</span>
+        <span class="val">53 Braidwood Road · L18</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<footer>
+  <div class="foot-brand">
+    <img src="./logo.png" alt="LPD" decoding="async" />
+    <span>LPD Liver Paint &amp; Decorate · Est. 1992</span>
+  </div>
+  <div class="foot-end">
+    <a href="https://www.instagram.com/lpd_liverpaint.and.decorate/" target="_blank" rel="noopener">Instagram</a>
+    <span>·</span>
+    <a href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">Checkatrade</a>
+    <span>·</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<!-- ============================== SCRIPTS ============================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function() {
+  let lenis = null;
+  try {
+    lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      smoothTouch: false
+    });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    if (window.gsap && window.ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
+  } catch (e) { console.warn('Lenis init failed:', e); }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.2 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+      const panel = document.getElementById('menuPanel');
+      if (panel) panel.classList.remove('open');
+    });
+  });
+
+  if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  const counter = document.getElementById('counter');
+  const preMark = document.getElementById('preMark');
+  const preTag  = document.getElementById('preTag');
+  const preBar  = document.getElementById('preBar');
+  const preLogo = document.getElementById('preLogo');
+  const preloader = document.getElementById('preloader');
+
+  if (window.gsap) {
+    gsap.to('#preLogo', { opacity: 1, y: 0, rotation: 3, duration: 0.9, ease: 'back.out(2)', delay: 0.05 });
+    gsap.to('#preMark', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.3 });
+    gsap.to('#preTag',  { opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.6 });
+  } else {
+    preLogo.style.opacity = 1; preLogo.style.transform = 'none';
+    preMark.style.opacity = 1; preMark.style.transform = 'none';
+    preTag.style.opacity = 1;
+  }
+
+  let pct = 0;
+  const tick = () => {
+    pct += Math.floor(Math.random() * 7) + 3;
+    if (pct >= 100) {
+      pct = 100;
+      counter.textContent = '100';
+      preBar.style.width = '100%';
+      setTimeout(revealSite, 440);
+    } else {
+      counter.textContent = pct;
+      preBar.style.width = pct + '%';
+      setTimeout(tick, 50 + Math.random() * 60);
+    }
+  };
+  setTimeout(tick, 700);
+
+  function revealSite() {
+    if (!window.gsap) {
+      preloader.style.display = 'none';
+      document.getElementById('nav').style.opacity = 1;
+      document.querySelectorAll('.hero-eyebrow-row, .hero .line-inner, .hero .hero-sub, .hero-bottom, .hero-logo-card, .reveal').forEach(el => {
+        el.style.opacity = 1; el.style.transform = 'none';
+      });
+      return;
+    }
+
+    const tl = gsap.timeline();
+    tl.to('#preLogo, #preMark, #preTag, .pre-bottom', { opacity: 0, duration: 0.4, ease: 'power2.in' });
+    tl.to('#preloader', { yPercent: -100, duration: 1.1, ease: 'power4.inOut', onComplete: () => preloader.remove() }, '-=0.1');
+    tl.to('#nav', { opacity: 1, duration: 0.55, ease: 'power2.out' }, '-=0.6');
+    tl.from('.hero .line-inner', { yPercent: 100, duration: 1.0, stagger: 0.1, ease: 'power4.out' }, '-=0.5');
+    tl.to('.hero-eyebrow-row', { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.6');
+    tl.to('.hero .hero-sub',   { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.5');
+    tl.to('.hero-bottom',      { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.5');
+    tl.to('#heroLogo',         { opacity: 1, rotation: -3, scale: 1, duration: 0.9, ease: 'back.out(1.4)' }, '-=0.7');
+
+    gsap.utils.toArray('.reveal').forEach((el) => {
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: 1.0, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+      });
+    });
+
+    ScrollTrigger.create({
+      trigger: '.svc-grid', start: 'top 80%', once: true,
+      onEnter: () => gsap.to('.svc.reveal', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 })
+    });
+    ScrollTrigger.create({
+      trigger: '.why-grid', start: 'top 80%', once: true,
+      onEnter: () => gsap.to('.why-cell.reveal', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08 })
+    });
+  }
+
+  // ============ Review flip-cards: staggered flip every 12 seconds ============
+  const reviewFlippers = document.querySelectorAll('.reviews-flipper');
+  if (reviewFlippers.length) {
+    const VIEW_MS    = 12000; // 12s reading time before each flip sequence
+    const STAGGER_MS = 500;   // each card flips 0.5s after the previous
+    const FLIP_MS    = 850;   // matches the CSS transition duration
+    // Total cycle = view time + last card's start delay + that card's flip duration
+    const cycleMs = VIEW_MS + (reviewFlippers.length - 1) * STAGGER_MS + FLIP_MS;
+    let isShowingB = false;
+
+    const flipSequence = () => {
+      isShowingB = !isShowingB;
+      reviewFlippers.forEach((fl, i) => {
+        setTimeout(() => fl.classList.toggle('is-flipped', isShowingB), i * STAGGER_MS);
+      });
+    };
+
+    // First flip starts after the initial 12s viewing window
+    setTimeout(function loop() {
+      flipSequence();
+      setTimeout(loop, cycleMs);
+    }, VIEW_MS);
+  }
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }, { passive: true });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const menuPanel  = document.getElementById('menuPanel');
+  if (menuToggle && menuPanel) {
+    menuToggle.addEventListener('click', () => {
+      const open = menuPanel.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', (e) => {
+      if (!menuPanel.classList.contains('open')) return;
+      if (menuPanel.contains(e.target) || menuToggle.contains(e.target)) return;
+      menuPanel.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  setTimeout(() => {
+    if (document.getElementById('preloader')) {
+      preloader.style.display = 'none';
+      document.getElementById('nav').style.opacity = 1;
+      document.querySelectorAll('.hero-eyebrow-row, .hero .line-inner, .hero .hero-sub, .hero-bottom, .hero-logo-card, .reveal').forEach(el => {
+        el.style.opacity = 1; el.style.transform = 'none';
+      });
+    }
+  }, 6000);
+})();
+</script>
+</body>
+</html>
