@@ -63,7 +63,6 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  padding-bottom: calc(82px + var(--safe-bottom));
 }
 a { color: inherit; text-decoration: none; }
 img, svg { display: block; max-width: 100%; }
@@ -122,7 +121,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .hero-skyline {
   position: absolute; left: 0; right: 0; bottom: 0;
-  width: 100%; height: 80px; opacity: 0.32;
+  width: 100%; height: 140px; opacity: 0.42;
   pointer-events: none; z-index: 0;
 }
 .hero-inner { position: relative; z-index: 1; }
@@ -191,15 +190,15 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 .hero-meta {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px 22px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
 }
 .hero-meta > div {
-  background: var(--bg-3); padding: 14px 16px;
-  border: 2px solid var(--comic); border-radius: 12px;
-  box-shadow: 3px 3px 0 0 var(--ink);
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: column; gap: 5px;
 }
-.hero-meta .k { font-family: var(--serif); font-size: 24px; color: var(--ink); line-height: 1; }
+.hero-meta .k { font-family: var(--serif); font-size: 26px; color: var(--ink); line-height: 1; }
 .hero-meta .k em { font-style: italic; color: var(--red); }
 .hero-meta .v {
   font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em;
@@ -333,21 +332,35 @@ section { padding: 52px var(--gutter); border-bottom: 1px solid var(--line); }
 .review-summary .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
 .review-summary .lbl a { color: var(--navy-2); border-bottom: 1px solid currentColor; }
 
-.review-scroll {
-  display: flex; gap: 12px; overflow-x: auto;
-  margin: 0 calc(var(--gutter) * -1); padding: 4px var(--gutter) 12px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+.review-marquee-mob {
+  position: relative; overflow: hidden;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 6px 0 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
 }
-.review-scroll::-webkit-scrollbar { display: none; }
+.review-marquee-mob-track {
+  display: flex; gap: 12px;
+  width: max-content;
+  padding: 6px var(--gutter);
+  align-items: stretch;
+  animation: review-scroll-mob 36s linear infinite;
+  will-change: transform;
+}
+@keyframes review-scroll-mob {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .review-marquee-mob-track { animation: none; }
+}
 .review-card {
-  flex: 0 0 84%; max-width: 84%;
+  flex: 0 0 78vw; max-width: 320px;
   background: var(--bg-3); border-radius: 16px;
   padding: 22px;
   border: 2px solid var(--comic);
   box-shadow: 5px 5px 0 0 var(--ink);
   display: flex; flex-direction: column; gap: 14px;
-  scroll-snap-align: start;
 }
 .review-card:nth-child(2) { background: var(--peach-2); }
 .review-card:nth-child(3) { background: var(--bg-2); }
@@ -481,49 +494,43 @@ section { padding: 52px var(--gutter); border-bottom: 1px solid var(--line); }
   letter-spacing: -0.01em;
 }
 
-/* ============ Footer ============ */
+/* ============ Footer with prominent CTA buttons ============ */
 footer {
   background: var(--ink); color: var(--bg);
-  padding: 24px var(--gutter) calc(24px + var(--safe-bottom));
+  padding: 24px var(--gutter) calc(28px + var(--safe-bottom));
   text-align: center;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 footer .foot-brand {
   display: inline-flex; align-items: center; gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--cream-2, #C8C2B6);
 }
 footer .foot-brand img {
-  width: 24px; height: 24px; border-radius: 6px; object-fit: cover;
+  width: 26px; height: 26px; border-radius: 7px; object-fit: cover;
   border: 1px solid var(--bg);
   image-rendering: high-quality;
   image-rendering: smooth;
 }
-footer .foot-links { display: flex; gap: 14px; justify-content: center; margin-top: 8px; }
-footer a { color: var(--bg); }
-
-/* ============ Fixed bottom CTA bar ============ */
-.bottom-bar {
-  position: fixed; left: 0; right: 0;
-  bottom: 0; z-index: 60;
-  padding: 10px var(--gutter) calc(10px + var(--safe-bottom));
-  background: rgba(251, 246, 236, 0.97);
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-  border-top: 1px solid var(--line);
-  display: flex; gap: 10px;
+footer .foot-ctas {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
 }
-.bottom-bar a {
-  flex: 1;
+footer .foot-cta {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 13px 14px; border-radius: 999px;
-  font-size: 13.5px; font-weight: 600; min-height: 48px;
-  border: 2px solid var(--comic);
-  box-shadow: 3px 3px 0 0 var(--ink);
+  padding: 14px 14px; border-radius: 999px;
+  font-size: 14px; font-weight: 600;
+  min-height: 50px;
+  border: 2px solid var(--bg);
 }
-.bottom-bar .bb-primary   { background: var(--red); color: var(--bg); }
-.bottom-bar .bb-secondary { background: var(--bg-3); color: var(--ink); }
-.bottom-bar a svg { width: 14px; height: 14px; }
-.bottom-bar a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--ink); }
+footer .foot-cta.primary { background: var(--red); color: var(--bg); border-color: var(--bg); }
+footer .foot-cta.ghost   { background: var(--bg);  color: var(--ink); }
+footer .foot-cta:active  { transform: translate(1px, 1px); }
+footer .foot-cta svg { width: 16px; height: 16px; }
+footer .foot-note {
+  margin-top: 14px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; opacity: 0.55;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -783,51 +790,99 @@ footer a { color: var(--bg); }
     </div>
   </div>
 
-  <div class="review-scroll">
-    <article class="review-card">
-      <div class="stars">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-      </div>
-      <p class="quote">10/10. Top quality and professional service. Turned up early, worked late to finish on time, kept the whole job clean and tidy.</p>
-      <div class="meta">
-        <span class="name">Verified Checkatrade customer</span>
-        <span class="work">Full house repaint · Liverpool</span>
-      </div>
-    </article>
+  <div class="review-marquee-mob" aria-label="Customer reviews from Checkatrade">
+    <div class="review-marquee-mob-track">
+      <article class="review-card">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="quote">10/10. Top quality and professional service. Turned up early, worked late to finish on time, kept the whole job clean and tidy.</p>
+        <div class="meta">
+          <span class="name">Verified Checkatrade customer</span>
+          <span class="work">Full house repaint · Liverpool</span>
+        </div>
+      </article>
 
-    <article class="review-card">
-      <div class="stars">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-      </div>
-      <p class="quote">Very pleased with the work Carl carried out. Really professional, worked long hours to finish on time, standard was excellent throughout.</p>
-      <div class="meta">
-        <span class="name">Verified Checkatrade customer</span>
-        <span class="work">Hallway, stairs &amp; landing</span>
-      </div>
-    </article>
+      <article class="review-card">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="quote">Very pleased with the work Carl carried out. Really professional, worked long hours to finish on time, standard was excellent throughout.</p>
+        <div class="meta">
+          <span class="name">Verified Checkatrade customer</span>
+          <span class="work">Hallway, stairs &amp; landing</span>
+        </div>
+      </article>
 
-    <article class="review-card">
-      <div class="stars">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-      </div>
-      <p class="quote">Great communication start to finish. Personable, friendly, polite and a hard worker, couldn't ask for more.</p>
-      <div class="meta">
-        <span class="name">Verified Checkatrade customer</span>
-        <span class="work">Lounge &amp; dining room</span>
-      </div>
-    </article>
+      <article class="review-card">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="quote">Great communication start to finish. Personable, friendly, polite and a hard worker, couldn't ask for more.</p>
+        <div class="meta">
+          <span class="name">Verified Checkatrade customer</span>
+          <span class="work">Lounge &amp; dining room</span>
+        </div>
+      </article>
+
+      <!-- Duplicate set for seamless loop -->
+      <article class="review-card" aria-hidden="true">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="quote">10/10. Top quality and professional service. Turned up early, worked late to finish on time, kept the whole job clean and tidy.</p>
+        <div class="meta">
+          <span class="name">Verified Checkatrade customer</span>
+          <span class="work">Full house repaint · Liverpool</span>
+        </div>
+      </article>
+
+      <article class="review-card" aria-hidden="true">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="quote">Very pleased with the work Carl carried out. Really professional, worked long hours to finish on time, standard was excellent throughout.</p>
+        <div class="meta">
+          <span class="name">Verified Checkatrade customer</span>
+          <span class="work">Hallway, stairs &amp; landing</span>
+        </div>
+      </article>
+
+      <article class="review-card" aria-hidden="true">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="quote">Great communication start to finish. Personable, friendly, polite and a hard worker, couldn't ask for more.</p>
+        <div class="meta">
+          <span class="name">Verified Checkatrade customer</span>
+          <span class="work">Lounge &amp; dining room</span>
+        </div>
+      </article>
+    </div>
   </div>
 
   <div class="review-cta-mob">
@@ -896,24 +951,18 @@ footer a { color: var(--bg); }
     <img src="./logo.png" alt="LPD" decoding="async" />
     <span>LPD · Est. 1992</span>
   </div>
-  <div class="foot-links">
-    <a href="https://www.instagram.com/lpd_liverpaint.and.decorate/" target="_blank" rel="noopener">Instagram</a>
-    <span>·</span>
-    <a href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">Checkatrade</a>
+  <div class="foot-ctas">
+    <a class="foot-cta primary" href="https://www.instagram.com/lpd_liverpaint.and.decorate/" target="_blank" rel="noopener" aria-label="Open LPD on Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+      Instagram
+    </a>
+    <a class="foot-cta ghost" href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener" aria-label="View LPD on Checkatrade">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 6v6c0 5 3.8 9.5 9 10 5.2-.5 9-5 9-10V6l-9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      Checkatrade
+    </a>
   </div>
+  <div class="foot-note">Liverpool &amp; Merseyside · 07552 293682</div>
 </footer>
-
-<!-- ============ Fixed bottom CTA ============ -->
-<div class="bottom-bar">
-  <a class="bb-primary" href="https://www.checkatrade.com/trades/lpdliverpaintanddecorate" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 6v6c0 5 3.8 9.5 9 10 5.2-.5 9-5 9-10V6l-9-4z"/><path d="M9 12l2 2 4-4"/></svg>
-    Get a quote
-  </a>
-  <a class="bb-secondary" href="https://www.instagram.com/lpd_liverpaint.and.decorate/" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/></svg>
-    Instagram
-  </a>
-</div>
 
 <script>
   document.querySelectorAll('a[href^="#"]').forEach(a => {
