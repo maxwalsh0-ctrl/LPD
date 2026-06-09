@@ -190,18 +190,26 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 .hero-meta {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 16px 22px;
-  padding-top: 8px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding-top: 12px;
   border-top: 1px solid var(--line);
 }
 .hero-meta > div {
   display: flex; flex-direction: column; gap: 5px;
+  align-items: center; text-align: center;
 }
-.hero-meta .k { font-family: var(--serif); font-size: 26px; color: var(--ink); line-height: 1; }
+.hero-meta .k {
+  font-family: var(--serif);
+  font-size: clamp(22px, 6.4vw, 28px);
+  color: var(--ink); line-height: 1;
+  white-space: nowrap;
+}
 .hero-meta .k em { font-style: italic; color: var(--red); }
 .hero-meta .v {
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em;
+  font-family: var(--mono);
+  font-size: clamp(8.5px, 2.4vw, 10px);
+  letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--muted);
 }
 
@@ -638,8 +646,7 @@ footer .foot-note {
     <div class="hero-meta">
       <div><span class="k"><em>30+</em></span><span class="v">Years</span></div>
       <div><span class="k">10/10</span><span class="v">Checkatrade</span></div>
-      <div><span class="k">Vetted</span><span class="v">ID · Insurance</span></div>
-      <div><span class="k">L18</span><span class="v">Mossley Hill</span></div>
+      <div><span class="k">Vetted</span><span class="v">Fully Insured</span></div>
     </div>
   </div>
 </section>
